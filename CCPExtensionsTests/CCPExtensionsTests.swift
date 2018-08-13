@@ -33,4 +33,12 @@ class CCPExtensionsTests: XCTestCase {
         }
     }
     
+    func testScaleImage() {
+    }
+    
+    func testWeekDay() {
+        let week = Date().week()
+        print(week)
+    }
+    
 }

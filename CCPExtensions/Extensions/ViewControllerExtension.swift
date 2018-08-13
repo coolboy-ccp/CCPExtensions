@@ -15,10 +15,18 @@ extension UIViewController {
         }
     }
     
-    static func fromXib<T: UIViewController>(_ vcClass: T.Type) -> T {
-        let name = String(describing: vcClass)
-        let vc = T(nibName: name, bundle: nil)
-        return vc
+    static func fromXib<T: UIViewController>() -> T {
+        let name = String(describing: self)
+        return self.init(nibName: name, bundle: nil) as! T
     }
     
+    func skipTo(_ vc: UIViewController, _ animation: Bool = true, _ completion: (() -> Void)? = nil) {
+        if let nav = self.navigationController {
+            vc.hidesBottomBarWhenPushed = true
+            nav.pushViewController(vc, animated: animation)
+        }
+        else {
+            self.present(vc, animated: animation, completion: completion)
+        }
+    }
 }

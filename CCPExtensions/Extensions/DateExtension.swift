@@ -8,100 +8,84 @@
 
 import UIKit
 
-public extension Date {
-    static var milliseconds: TimeInterval {
-        get { return Date().timeIntervalSince1970 * 1000 }
+extension Date {
+    static var week: String {
+        let components = Calendar.current.dateComponents([.weekday], from: Date())
+        guard let weekday = components.weekday else { return "当前日期不存在星期选项" }
+        let weekStrings = ["如果从0开始说明苹果的api有变化", "周日", "周一", "周二", "周三", "周四", "周五", "周六"]
+        return weekStrings[weekday]
     }
     
-    func week() -> String {
-        let myWeekday: Int = (Calendar.current as NSCalendar).components([NSCalendar.Unit.weekday], from: self).weekday!
-        switch myWeekday {
-        case 0:
-            return "周日"
-        case 1:
-            return "周一"
-        case 2:
-            return "周二"
-        case 3:
-            return "周三"
-        case 4:
-            return "周四"
-        case 5:
-            return "周五"
-        case 6:
-            return "周六"
-        default:
-            break
-        }
-        return "未取到数据"
-    }
-    
-    static func messageAgoSinceDate(_ date: Date) -> String {
-        return self.timeAgoSinceDate(date, numericDates: false)
-    }
-    
-    static func timeAgoSinceDate(_ date: Date, numericDates: Bool) -> String {
-        let calendar = Calendar.current
+    func timeAgoSinceNow() -> String {
         let now = Date()
-        let earliest = (now as NSDate).earlierDate(date)
-        let latest = (earliest == now) ? date : now
-        let components:DateComponents = (calendar as NSCalendar).components([
-            NSCalendar.Unit.minute,
-            NSCalendar.Unit.hour,
-            NSCalendar.Unit.day,
-            NSCalendar.Unit.weekOfYear,
-            NSCalendar.Unit.month,
-            NSCalendar.Unit.year,
-            NSCalendar.Unit.second
-            ], from: earliest, to: latest, options: NSCalendar.Options())
-        
-        if (components.year! >= 2) {
-            return "\(String(describing: components.year)) 年前"
-        } else if (components.year! >= 1){
-            if (numericDates){
-                return "1 年前"
-            } else {
+        let ealier = (self as NSDate).earlierDate(now)
+        let isEalier = ealier == self
+        if isEalier {
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.year, .month, .weekOfYear, .day, .hour, .minute, .second, .weekday], from: self, to: now)
+            if let year = components.year, year > 0 {
+                if year > 1 {
+                    return "\(year) 年前"
+                }
                 return "去年"
             }
-        } else if (components.month! >= 2) {
-            return "\(String(describing: components.month)) 月前"
-        } else if (components.month! >= 1){
-            if (numericDates){
-                return "1 个月前"
-            } else {
-                return "上个月"
+            if let month = components.month, month > 0 {
+                if month > 1 {
+                    return "\(month) 月前"
+                }
+                return "上月"
             }
-        } else if (components.weekOfYear! >= 2) {
-            return "\(String(describing: components.weekOfYear)) 周前"
-        } else if (components.weekOfYear! >= 1){
-            if (numericDates){
-                return "1 周前"
-            } else {
-                return "上一周"
+            if let week = components.weekOfYear, week > 0 {
+                if week > 1 {
+                    return "\(week) 周前"
+                }
+                return "上周"
             }
-        } else if (components.day! >= 2) {
-            return "\(String(describing: components.day)) 天前"
-        } else if (components.day! >= 1){
-            if (numericDates){
-                return "1 天前"
-            } else {
+            if let day = components.day, day > 0 {
+                if day > 1 {
+                    return "\(day) 天前"
+                }
                 return "昨天"
             }
-        } else if (components.hour! >= 2) {
-            return "\(String(describing: components.hour)) 小时前"
-        } else if (components.hour! >= 1){
-            return "1 小时前"
-        } else if (components.minute! >= 2) {
-            return "\(String(describing: components.minute)) 分钟前"
-        } else if (components.minute! >= 1){
-            return "1 分钟前"
-        } else if (components.second! >= 3) {
-            return "\(String(describing: components.second)) 秒前"
-        } else {
+            if let hour = components.hour, hour > 0 {
+                return "\(hour) 小时前"
+            }
+            if let minute = components.minute, minute > 0 {
+                return "\(minute) 分钟前"
+            }
+            if let second = components.second, second > 0 {
+                return "\(second) 秒前"
+            }
             return "刚刚"
         }
+        
+        return "给定的时间晚于当前时间"
+    }
+    
+    static func thisWeekDays() -> [Date] {
+        let date = Date()
+        let calendar = Calendar.current
+        let componets = calendar.dateComponents([.year, .month, .weekday, .day, .hour, .minute, .second], from: date)
+        let dates = (0 ... 6).map { (idx) -> Date in
+            var varComponents = componets
+            let offset = idx - componets.weekday! + 1
+            varComponents.day! += offset
+            return (calendar.date(from: varComponents)!)
+        }
+        return dates
+    }
+    
+    func zeroPoint() -> Date {
+        let timeInval = Int(self.timeIntervalSince1970) / (24 * 3600) * (24 * 3600)
+        return Date(timeIntervalSince1970: Double(timeInval))
+    }
+    
+    func latestPoint() -> Date {
+        let timeInval = zeroPoint().timeIntervalSince1970 + 24 * 3600 - 1
+        return Date(timeIntervalSince1970: Double(timeInval))
     }
 }
+
 
 extension Date {
     /**
@@ -115,54 +99,49 @@ extension Date {
      d) 如果在一年之内，则显示月份日期 和时间，如：7月18日 12:34
      e) 一年以上的，显示年月日 加时间，如： 2014年6月29日 8:20
      */
-    fileprivate var chatTimeString: String? {
-        get {
-            let calendar = Calendar.current
-            let now = Date()
-            let earliest = (now as NSDate).earlierDate(self)
-            let latest = (earliest == now) ? self : now
-            let components:DateComponents = (calendar as NSCalendar).components([
-                NSCalendar.Unit.minute,
-                NSCalendar.Unit.hour,
-                NSCalendar.Unit.day,
-                NSCalendar.Unit.weekOfYear,
-                NSCalendar.Unit.month,
-                NSCalendar.Unit.year,
-                NSCalendar.Unit.second
-                ], from: earliest, to: latest, options: NSCalendar.Options())
-            
-            let nowComponents:DateComponents = (calendar as NSCalendar).components([
-                NSCalendar.Unit.minute,
-                NSCalendar.Unit.hour,
-                NSCalendar.Unit.day,
-                NSCalendar.Unit.month,
-                NSCalendar.Unit.year,
-                ], from: now)
-            
-            let selfComponents:DateComponents = (calendar as NSCalendar).components([
-                NSCalendar.Unit.minute,
-                NSCalendar.Unit.hour,
-                NSCalendar.Unit.day,
-                NSCalendar.Unit.month,
-                NSCalendar.Unit.year,
-                ], from: earliest)
-            
-            if nowComponents.year != selfComponents.year {
-                return String(format: "%zd年%zd月%zd日 %zd:%zd", selfComponents.year!, selfComponents.month!, selfComponents.day!, selfComponents.hour!, selfComponents.minute!)
-            } else if nowComponents.year == selfComponents.year {
-                if (components.month! > 0 || components.day! > 7) {
-                    return String(format: "%zd月%zd日 %zd:%zd", selfComponents.month!, selfComponents.day!, selfComponents.hour!, selfComponents.minute!)
-                } else if (components.day! > 2) {
-                    return String(format: "%@ %zd:%zd",self.week(), selfComponents.hour!, selfComponents.minute!)
-                } else if (components.day == 2) {
-                    return String(format: "前天 %zd:%zd",selfComponents.hour!, selfComponents.minute!)
-                } else if (components.day == 1) {
-                    return String(format: "昨天 %zd:%zd",selfComponents.hour!, selfComponents.minute!)
-                } else {
-                    return String(format: "%zd:%zd",selfComponents.hour!, selfComponents.minute!)
-                }
+    
+    var timeString: String? {
+        let calendar = Calendar.current
+        let now = Date()
+        let componentsSet: Set<Calendar.Component> = [.year, .month, .weekday, .day, .hour, .minute, .second]
+        let nowComponents = calendar.dateComponents(componentsSet, from: now)
+        let targetComponents = calendar.dateComponents(componentsSet, from: self)
+        let year = nowComponents.year! - targetComponents.year!
+        let month = nowComponents.month! - targetComponents.month!
+        let day = nowComponents.day! - targetComponents.day!
+        
+        if year != 0 {
+            return String(format: "%zd年%zd月%zd日 %02d:%02d", targetComponents.year!, targetComponents.month!, targetComponents.day!, targetComponents.hour!, targetComponents.minute!)
+        }
+        if (month > 0 || day > 7) {
+            return String(format: "%zd月%zd日 %02d:%02d", targetComponents.month!, targetComponents.day!, targetComponents.hour!, targetComponents.minute!)
+        } else if (day > 2) {
+            return String(format: "%@ %02d:%02d",Date.week, targetComponents.hour!, targetComponents.minute!)
+        } else if (day == 2) {
+            if targetComponents.hour! < 12 {
+                return String(format: "前天上午 %02d:%02d",targetComponents.hour!, targetComponents.minute!)
+            } else if targetComponents.hour == 12 {
+                return String(format: "前天下午 %02d:%02d",targetComponents.hour!, targetComponents.minute!)
+            } else {
+                return String(format: "前天下午 %02d:%02d",targetComponents.hour! - 12, targetComponents.minute!)
             }
-            
+        } else if (day == 1) {
+            if targetComponents.hour! < 12 {
+                return String(format: "昨天上午 %02d:%02d",targetComponents.hour!, targetComponents.minute!)
+            } else if targetComponents.hour == 12 {
+                return String(format: "昨天下午 %02d:%02d",targetComponents.hour!, targetComponents.minute!)
+            } else {
+                return String(format: "昨天下午 %02d:%02d",targetComponents.hour! - 12, targetComponents.minute!)
+            }
+        } else if (day == 0){
+            if targetComponents.hour! < 12 {
+                return String(format: "上午 %02d:%02d",targetComponents.hour!, targetComponents.minute!)
+            } else if targetComponents.hour == 12 {
+                return String(format: "下午 %02d:%02d",targetComponents.hour!, targetComponents.minute!)
+            } else {
+                return String(format: "下午 %02d:%02d",targetComponents.hour! - 12, targetComponents.minute!)
+            }
+        } else {
             return ""
         }
     }

@@ -26,6 +26,7 @@
 		001FA5C720F8475F00D2468F /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FA5C620F8475F00D2468F /* DateExtension.swift */; };
 		001FA5CB20F847E200D2468F /* ScreenExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FA5CA20F847E200D2468F /* ScreenExtension.swift */; };
 		001FA5CD20F8491300D2468F /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FA5CC20F8491300D2468F /* ViewControllerExtension.swift */; };
+		005D9767210EFF9E004A826E /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FA5C620F8475F00D2468F /* DateExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -267,6 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				001FA5A320F8458200D2468F /* CCPExtensionsTests.swift in Sources */,
+				005D9767210EFF9E004A826E /* DateExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

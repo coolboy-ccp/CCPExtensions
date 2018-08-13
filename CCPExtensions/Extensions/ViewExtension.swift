@@ -91,3 +91,18 @@ extension UIView {
         }
     }
 }
+
+extension UIView {
+    func currentVC<T: UIViewController>() -> T {
+        var vc = T()
+        var next = self.next
+        while next != nil {
+            if next!.isKind(of: T.self) {
+                vc = next as! T
+                break
+            }
+            next = next?.next
+        }
+        return vc
+    } 
+}
