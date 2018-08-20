@@ -20,4 +20,21 @@ extension String {
             context: nil)
         return boundingBox.size
     }
+    
+    func toData() -> Data? {
+        guard let data = self.data(using: .utf8) else {
+            return nil
+        }
+        return data
+    }
+    
+    func toDictionary() -> [String : Any] {
+        guard let data = toData() else {
+            return [String : Any]()
+        }
+        guard let dic = data.toDictionary() else {
+            return [String : Any]()
+        }
+        return dic
+    }
 }

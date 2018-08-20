@@ -26,6 +26,8 @@
 		001FA5C720F8475F00D2468F /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FA5C620F8475F00D2468F /* DateExtension.swift */; };
 		001FA5CB20F847E200D2468F /* ScreenExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FA5CA20F847E200D2468F /* ScreenExtension.swift */; };
 		001FA5CD20F8491300D2468F /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FA5CC20F8491300D2468F /* ViewControllerExtension.swift */; };
+		004437D8212AA07B003F9EA4 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004437D7212AA07B003F9EA4 /* DataExtension.swift */; };
+		004437DA212AA0C1003F9EA4 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004437D9212AA0C1003F9EA4 /* DictionaryExtension.swift */; };
 		005D9767210EFF9E004A826E /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FA5C620F8475F00D2468F /* DateExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +65,8 @@
 		001FA5C620F8475F00D2468F /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		001FA5CA20F847E200D2468F /* ScreenExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenExtension.swift; sourceTree = "<group>"; };
 		001FA5CC20F8491300D2468F /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
+		004437D7212AA07B003F9EA4 /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
+		004437D9212AA0C1003F9EA4 /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +144,8 @@
 				001FA5C620F8475F00D2468F /* DateExtension.swift */,
 				001FA5CA20F847E200D2468F /* ScreenExtension.swift */,
 				001FA5CC20F8491300D2468F /* ViewControllerExtension.swift */,
+				004437D7212AA07B003F9EA4 /* DataExtension.swift */,
+				004437D9212AA0C1003F9EA4 /* DictionaryExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -250,9 +256,11 @@
 				001FA58E20F8458100D2468F /* AppDelegate.swift in Sources */,
 				001FA5C520F8471700D2468F /* ColorExtension.swift in Sources */,
 				001FA5BB20F8469B00D2468F /* ViewExtension.swift in Sources */,
+				004437D8212AA07B003F9EA4 /* DataExtension.swift in Sources */,
 				001FA5CB20F847E200D2468F /* ScreenExtension.swift in Sources */,
 				001FA5C720F8475F00D2468F /* DateExtension.swift in Sources */,
 				001FA5B920F8468E00D2468F /* ButtonExtension.swift in Sources */,
+				004437DA212AA0C1003F9EA4 /* DictionaryExtension.swift in Sources */,
 				001FA5CD20F8491300D2468F /* ViewControllerExtension.swift in Sources */,
 				001FA5BF20F846C000D2468F /* StringExtension.swift in Sources */,
 				001FA5C120F846D200D2468F /* LabelExtension.swift in Sources */,
